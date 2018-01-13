@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd
+	   					   http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+	<!-- Specify all lifts -->
+	<bean id="lift1" class="com.demo.liftApp.entity.Lift">
+		<constructor-arg name="liftId" value="1" />
+		<constructor-arg name="liftNumber" value="1" />
+		<constructor-arg name="currentFloor" value="1" />
+	</bean>
+
+	<bean id="lift2" class="com.demo.liftApp.entity.Lift">
+		<constructor-arg name="liftId" value="2" />
+		<constructor-arg name="liftNumber" value="2" />
+		<constructor-arg name="currentFloor" value="1" />
+	</bean>
+
+	<bean id="lift3" class="com.demo.liftApp.entity.Lift">
+		<constructor-arg name="liftId" value="3" />
+		<constructor-arg name="liftNumber" value="3" />
+		<constructor-arg name="currentFloor" value="1" />
+	</bean>
+
+	<bean id="lift4" class="com.demo.liftApp.entity.Lift">
+		<constructor-arg name="liftId" value="4" />
+		<constructor-arg name="liftNumber" value="4" />
+		<constructor-arg name="currentFloor" value="1" />
+	</bean>
+
+	<!-- Lift Engine Service -->
+	<bean id="liftEngineService" class="com.demo.liftApp.service.impl.LiftEngineServiceImpl">
+		<constructor-arg name="liftNumberMap" ref="liftMapRef" />
+		<constructor-arg name="availableLiftQueue" ref="availableLiftQueueRef" />
+	</bean>
+
+	<!-- Specify key-value pair for each of the lifts -->
+	<util:map id="liftMapRef" key-type="java.lang.Long"
+		map-class="java.util.concurrent.ConcurrentHashMap">
+		<entry key="1" value-ref="lift1" />
+		<entry key="2" value-ref="lift2" />
+		<entry key="3" value-ref="lift3" />
+		<entry key="4" value-ref="lift4" />
+	</util:map>
+
+	<bean id="availableLiftQueueRef" class="java.util.concurrent.LinkedBlockingQueue">
+		<constructor-arg ref="intialListRef"></constructor-arg>
+	</bean>
+
+	<util:list id="intialListRef" value-type="java.util.ArrayList">
+		<ref bean="lift1" />
+		<ref bean="lift2" />
+		<ref bean="lift3" />
+		<ref bean="lift4" />
+	</util:list>
+
+	<bean id="appParamValidator" class="com.demo.liftApp.validator.AppParamValidator" />
+
+	<bean id="userParamValidator" class="com.demo.liftApp.validator.UserParamValidator" />
+
+</beans>
